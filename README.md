@@ -70,8 +70,6 @@ mvn spring-boot:run
 
 Ou depuis IntelliJ : *Run → Run 'Application'*
 
-<!-- [Screenshot : IntelliJ IDEA avec l'application démarrée, console montrant "Started KafkaSpringCloudStreamApplication"] -->
-
 ### 4. Tester l'application
 
 L'application sera disponible sur `http://localhost:8080`
@@ -88,20 +86,14 @@ GET http://localhost:8080/publish?name=P1&topic=T2
 **Paramètres :**
 - `name` : Nom de la page (P1, P2, etc.)
 - `topic` : Topic Kafka de destination
-<!-- [Screenshot : Navigateur web avec l'URL http://localhost:8080/publish?name=P1&topic=T2 et la réponse JSON affichée] -->
 
-<!-- [Screenshot : Postman ou navigateur montrant la requête et la réponse avec les détails de PageEvent] -->
+![Producer REST (Topic T2) Browser](assets/4-Test1.png)
 
 ### 2. Consumer Kafka
 
 Consomme automatiquement les messages du topic T2 et les affiche dans la console.
 
-<!-- [Screenshot : Console IntelliJ montrant les logs du Consumer avec les étoiles et les messages PageEvent reçus] -->
-
-**Exemple de sortie console :**
-```
-Consuming: PageEvent[name=P1, user=U2, date=Sun Oct 05 18:30:45 CET 2025, duration=1567]
-```
+![Producer REST (Topic T2) Console](assets/4.2-Test2.png)
 
 ### 3. Supplier (Auto-Producer vers T3)
 
@@ -112,8 +104,6 @@ Génère automatiquement des événements PageEvent toutes les 200ms vers le top
 spring.cloud.stream.bindings.pageEventSupplier-out-0.producer.poller.fixed-delay=200
 ```
 
-<!-- [Screenshot : Fichier application.properties ouvert dans IntelliJ avec les configurations en surbrillance] -->
-
 ### 4. Kafka Streams - Analytics en Temps Réel
 
 Traite le flux d'événements du topic T3 :
@@ -123,8 +113,6 @@ Traite le flux d'événements du topic T3 :
 - **Agrégation** : Comptage du nombre de visites
 - **Output** : Résultats publiés sur topic T4
 
-<!-- [Screenshot : Code source de la fonction kstreamFunction dans IntelliJ] -->
-
 ### 5. Interface Web de Visualisation
 
 Accéder à : `http://localhost:8080/index.html`
@@ -133,57 +121,55 @@ Affiche en temps réel :
 - Graphique à barres du nombre de visites par page
 - Mise à jour toutes les secondes
 
-<!-- [Screenshot : Page web avec le graphique Chart.js montrant les barres P1 et P2 avec des valeurs] -->
-
-<!-- [Screenshot : Animation ou GIF montrant le graphique se mettre à jour en temps réel] -->
+![Interface Web de Visualitaion](assets/5-Result.png)
 
 ## 🧪 Tests avec Kafka Console
 
 ### Tester le Producer Console
 
 ```bash
-docker exec -it bdcc-kafka-broker kafka-console-producer \
+docker exec -it ccn-kafka-broker kafka-console-producer \
   --bootstrap-server localhost:9092 \
   --topic T1
 ```
 
-<!-- [Screenshot : Terminal avec kafka-console-producer actif, prêt à recevoir des messages] -->
+![Producer Console](assets/6-Result.png)
 
 ### Tester le Consumer Console
 
 ```bash
-docker exec -it bdcc-kafka-broker kafka-console-consumer \
+docker exec -it ccn-kafka-broker kafka-console-consumer \
   --bootstrap-server localhost:9092 \
   --topic T1 \
   --from-beginning
 ```
 
-<!-- [Screenshot : Deux terminaux côte à côte - Producer à gauche envoyant "Hello", Consumer à droite recevant "Hello"] -->
+![Consumer Console](assets/6-Result2.png)
 
 ### Consommer les messages du Topic T2
 
 ```bash
-docker exec -it bdcc-kafka-broker kafka-console-consumer \
+docker exec -it ccn-kafka-broker kafka-console-consumer \
   --bootstrap-server localhost:9092 \
   --topic T2
 ```
 
-<!-- [Screenshot : Terminal montrant les messages JSON PageEvent reçus sur le topic T2] -->
+![Topic T2](assets/6-Result3.png)
 
 ### Consommer les messages du Topic T3 (Supplier)
 
 ```bash
-docker exec -it bdcc-kafka-broker kafka-console-consumer \
+docker exec -it ccn-kafka-broker kafka-console-consumer \
   --bootstrap-server localhost:9092 \
   --topic T3
 ```
 
-<!-- [Screenshot : Terminal montrant le flux continu de messages générés automatiquement toutes les 200ms] -->
+![Topic T3 (Supplier)](assets/6-Result4.png)
 
 ### Visualiser les résultats Kafka Streams (T4)
 
 ```bash
-docker exec -it bdcc-kafka-broker kafka-console-consumer \
+docker exec -it ccn-kafka-broker kafka-console-consumer \
   --bootstrap-server localhost:9092 \
   --topic T4 \
   --property print.key=true \
@@ -192,15 +178,7 @@ docker exec -it bdcc-kafka-broker kafka-console-consumer \
   --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer
 ```
 
-<!-- [Screenshot : Terminal montrant les résultats du Kafka Streams avec format "P1	150" et "P2	120"] -->
-
-**Exemple de sortie :**
-```
-P1	145
-P2	138
-P1	150
-P2	142
-```
+![Kafka Streams (T4)](assets/6-Result5.png)
 
 ## 📊 Structure du Projet
 
@@ -209,24 +187,46 @@ kafka-spring-cloud-stream/
 ├── src/
 │   ├── main/
 │   │   ├── java/
-│   │   │   └── ma/youssfi/
-│   │   │       ├── KafkaSpringCloudStreamApplication.java
-│   │   │       ├── controllers/
-│   │   │       │   └── PageEventController.java
-│   │   │       ├── events/
-│   │   │       │   └── PageEvent.java
-│   │   │       └── handlers/
-│   │   │           └── PageEventHandler.java
+│   │   │   └── ma/
+│   │   │       └── jaouad/
+│   │   │           └── kafkaspringcloudstream/
+│   │   │               ├── KafkaSpringCloudStreamApplication.java
+│   │   │               ├── controllers/
+│   │   │               │   ├── PageEventController.java
+│   │   │               │   └── AnalyticsRestController.java
+│   │   │               ├── events/
+│   │   │               │   └── PageEvent.java
+│   │   │               └── handlers/
+│   │   │                   └── PageEventHandler.java
 │   │   └── resources/
 │   │       ├── application.properties
-│   │       └── static/
-│   │           └── index.html
+│   │       ├── static/
+│   │       │   └── index.html
+│   │       └── templates/
+│   └── test/
+│       └── java/
+│           └── ma/
+│               └── jaouad/
+│                   └── kafkaspringcloudstream/
+│                       └── KafkaSpringCloudStreamApplicationTests.java
+├── assets/
+│   ├── architecture-diagram.png
+│   ├── rest-api-request.png
+│   ├── kafka-streams-output.png
+│   └── web-interface.png
+├── .idea/
+├── .mvn/
+├── target/
+├── .gitattributes
+├── .gitignore
 ├── docker-compose.yml
+├── HELP.md
+├── mvnw
+├── mvnw.cmd
 ├── pom.xml
 └── README.md
-```
 
-<!-- [Screenshot : Explorateur de fichiers IntelliJ montrant l'arborescence complète du projet] -->
+```
 
 ## 🔍 Concepts Clés
 
@@ -242,8 +242,6 @@ public record PageEvent(
 ) {}
 ```
 
-<!-- [Screenshot : Code source de PageEvent.java dans IntelliJ] -->
-
 ### Spring Cloud Stream Bindings
 
 - **Consumer** : `<functionName>-in-<index>`
@@ -257,8 +255,6 @@ public record PageEvent(
 - **groupByKey()** : Grouper par clé
 - **windowedBy()** : Définir une fenêtre temporelle
 - **count()** : Compter les événements dans chaque groupe/fenêtre
-
-<!-- [Screenshot : Code annoté montrant chaque opération Kafka Streams avec des commentaires] -->
 
 ## 📈 Démonstration Complète
 
@@ -292,17 +288,11 @@ docker-compose down
 docker-compose up -d
 ```
 
-<!-- [Screenshot : Docker Desktop Settings ou message d'erreur résolu] -->
-
 ### Port 9092 déjà utilisé
 Modifiez le port dans `docker-compose.yml` et `application.properties`.
 
-<!-- [Screenshot : Modification du fichier docker-compose.yml avec le nouveau port] -->
-
 ### Les messages n'arrivent pas
 Vérifiez que les topics et bindings correspondent dans la configuration.
-
-<!-- [Screenshot : Fichier application.properties avec les bindings en surbrillance] -->
 
 ### Erreur au démarrage de l'application
 ```bash
@@ -314,74 +304,17 @@ mvn clean install
 
 ## 📚 Ressources
 
-- [Vidéo du cours - Prof. Mohamed YOUSSFI](https://www.youtube.com/watch?v=8uY7JE_X_Fw)
+- [Vidéo du demo - Prof. Mohamed YOUSSFI](https://www.youtube.com/watch?v=8uY7JE_X_Fw)
 - [Apache Kafka Documentation](https://kafka.apache.org/documentation/)
 - [Spring Cloud Stream](https://spring.io/projects/spring-cloud-stream)
 - [Kafka Streams Documentation](https://kafka.apache.org/documentation/streams/)
 
-## 🎥 Vidéo de Démonstration
-
-<!-- [Screenshot ou lien : Vidéo de démonstration du projet en action (si vous en créez une)] -->
-
-## 📸 Galerie
-
-### Configuration et Setup
-
-<!-- [Screenshot : docker-compose.yml ouvert dans l'éditeur] -->
-
-<!-- [Screenshot : pom.xml montrant les dépendances Spring Cloud Stream et Kafka] -->
-
-### Code Principal
-
-<!-- [Screenshot : PageEventController.java - méthode publish()] -->
-
-<!-- [Screenshot : PageEventHandler.java - les trois beans (Consumer, Supplier, Function)] -->
-
-### Résultats et Logs
-
-<!-- [Screenshot : Console complète montrant tous les logs lors de l'exécution] -->
-
-<!-- [Screenshot : Kafka console consumer avec un flux de données] -->
-
-### Interface Utilisateur
-
-<!-- [Screenshot : Code HTML/JavaScript de index.html] -->
-
-<!-- [Screenshot : Inspecteur de navigateur montrant les requêtes en temps réel] -->
-
 ## 👨‍🎓 Auteur
 
-**Votre Nom**  
-Activité Pratique N°1 - Event Driven Architecture  
-Professeur : Mohamed YOUSSFI  
-Date : Octobre 2025
-
-<!-- [Screenshot : Photo de profil ou avatar (optionnel)] -->
+- **Salah-Eddine JAOUAD**  
+- Activité Pratique N°1 - Event Driven Architecture  
+- **Professeur :** Mohamed YOUSSFI
 
 ## 📄 Licence
 
 Ce projet est réalisé dans un cadre académique.
-
----
-
-## ✅ Checklist de Validation
-
-- [x] Docker Desktop installé et démarré
-- [x] Kafka et Zookeeper lancés avec `docker-compose up -d`
-- [x] Application Spring Boot démarre sans erreur
-- [x] Test du REST Producer fonctionnel
-- [x] Consumer affiche les messages dans la console
-- [x] Supplier génère des événements automatiquement
-- [x] Kafka Streams traite et compte les événements
-- [x] Interface web accessible et affiche les graphiques
-- [x] Tous les fichiers commités sur GitHub
-- [x] README.md complet et formaté
-- [x] Screenshots ajoutés dans le README
-
-<!-- [Screenshot : Repository GitHub montrant tous les fichiers commités avec un beau README] -->
-
----
-
-⭐ Si ce projet vous a été utile, n'oubliez pas de mettre une étoile !
-
-<!-- [Screenshot : Page GitHub du projet avec le bouton Star en évidence] -->
