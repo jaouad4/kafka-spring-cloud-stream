@@ -40,9 +40,10 @@ Activité pratique démontrant l'implémentation d'une architecture événementi
 
 ### 1. Cloner le repository
 
-``git clone https://github.com/jaouad4/kafka-spring-cloud-stream``
-
-``cd kafka-spring-cloud-stream``
+```bash
+git clone https://github.com/jaouad4/kafka-spring-cloud-stream
+cd kafka-spring-cloud-stream
+```
 
 ### 2. Démarrer Kafka et Zookeeper avec Docker
 
@@ -50,14 +51,16 @@ Activité pratique démontrant l'implémentation d'une architecture événementi
 docker-compose up -d
 ```
 
+![docker-compose up -d](./assets/2%20-%20Docker%20compose%20command.png)
+![docker-compose up -d results](./assets/2.5%20-%20Docker%20compose%20result.png)
+
 Vérifier que les conteneurs sont actifs :
 ```bash
 docker ps
 ```
-
-<!-- [Screenshot : Docker Desktop montrant les conteneurs bdcc-zookeeper et bdcc-kafka-broker en cours d'exécution] -->
-
-<!-- [Screenshot : Terminal avec la sortie de 'docker ps' montrant les deux conteneurs actifs] -->
+![docker ps](./assets/3%20-%20Docker%20ps.png)
+![docker ps result 1](./assets/3.5.1%20-%20%20Docker%20ps%20result%201.png)
+![docker ps result 2](./assets/3.5.2%20-%20%20Docker%20ps%20result%202.png)
 
 ### 3. Démarrer l'application Spring Boot
 
@@ -86,7 +89,6 @@ GET http://localhost:8080/publish?name=P1&topic=T2
 **Paramètres :**
 - `name` : Nom de la page (P1, P2, etc.)
 - `topic` : Topic Kafka de destination
-
 <!-- [Screenshot : Navigateur web avec l'URL http://localhost:8080/publish?name=P1&topic=T2 et la réponse JSON affichée] -->
 
 <!-- [Screenshot : Postman ou navigateur montrant la requête et la réponse avec les détails de PageEvent] -->
