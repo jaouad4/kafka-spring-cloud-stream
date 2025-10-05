@@ -17,7 +17,7 @@ Activité pratique démontrant l'implémentation d'une architecture événementi
 - Visualiser des analytics en temps réel dans une interface web
 
 ## 🏗️ Architecture
-![Architecture](./assets/1%20-%20Architecture.svg)
+![Architecture](assets/1-Architecture.svg)
 
 ## 🚀 Technologies Utilisées
 
@@ -50,17 +50,15 @@ cd kafka-spring-cloud-stream
 ```bash
 docker-compose up -d
 ```
-
-![docker-compose up -d](./assets/2%20-%20Docker%20compose%20command.png)
-![docker-compose up -d results](./assets/2.5%20-%20Docker%20compose%20result.png)
-
+![docker-compose up -d](assets/2-Docker_compose_command.png)
+![docker-compose up -d results](assets/2.5-Docker_compose_results.png)
 Vérifier que les conteneurs sont actifs :
 ```bash
 docker ps
 ```
-![docker ps](./assets/3%20-%20Docker%20ps.png)
-![docker ps result 1](./assets/3.5.1%20-%20%20Docker%20ps%20result%201.png)
-![docker ps result 2](./assets/3.5.2%20-%20%20Docker%20ps%20result%202.png)
+![docker ps](assets/3-Docker_ps.png)
+![docker ps result 1](assets/3.5.1-Docker_ps_result1.png)
+![docker ps result 2](assets/3.5.2-Docker_ps_result2.png)
 
 ### 3. Démarrer l'application Spring Boot
 
