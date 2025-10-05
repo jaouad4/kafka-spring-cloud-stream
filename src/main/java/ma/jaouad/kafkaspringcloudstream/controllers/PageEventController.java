@@ -1,6 +1,6 @@
-package ma.jaouad.controllers;
+package ma.jaouad.kafkaspringcloudstream.controllers;
 
-import ma.jaouad.events.PageEvent;
+import ma.jaouad.kafkaspringcloudstream.events.PageEvent;
 
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.web.bind.annotation.GetMapping;

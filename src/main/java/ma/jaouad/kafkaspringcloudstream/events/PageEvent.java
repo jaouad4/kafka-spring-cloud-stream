@@ -1,4 +1,4 @@
-package ma.jaouad.events;
+package ma.jaouad.kafkaspringcloudstream.events;
 
 import java.util.Date;
 
