@@ -52,6 +52,7 @@ docker-compose up -d
 ```
 ![docker-compose up -d](assets/2-Docker_compose_command.png)
 ![docker-compose up -d results](assets/2.5-Docker_compose_results.png)
+
 Vérifier que les conteneurs sont actifs :
 ```bash
 docker ps
